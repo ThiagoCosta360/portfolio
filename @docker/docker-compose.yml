@@ -3,7 +3,9 @@ version: "3"
 services:
   front:
     container_name: front
-    build: ./front
+    build: 
+      dockerfile: node.dockerfile
+      context: .
     restart: unless-stopped
     working_dir: "/front"
     volumes:
@@ -13,7 +15,9 @@ services:
 
   back:
     container_name: back
-    build: ./back
+    build: 
+      dockerfile: node.dockerfile
+      context: .
     restart: unless-stopped
     ports:
       - "2000:2000"
@@ -22,6 +26,20 @@ services:
       - ../back:/back
     # depends_on:
     #   - postgres
+
+  # TODO: liberar porta 80 e 443 no modo prod
+  nginx:
+    container_name: nginx
+    build: 
+      dockerfile: nginx.dockerfile
+      context: .
+    restart: unless-stopped
+    volumes: 
+      - "../nginx/default.conf:/etc/nginx/conf.d/default.conf"
+    ports:
+      - "8080:80"
+    logging:
+      driver: none
 
   # postgres:
   #   container_name: postgres
