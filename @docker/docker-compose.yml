@@ -2,28 +2,28 @@ version: "3"
 
 services:
   front:
-    container_name: front
+    container_name: ${FRONT_NAME}
     build: 
       dockerfile: node.dockerfile
       context: .
     restart: unless-stopped
-    working_dir: "/front"
+    working_dir: "/${FRONT_NAME}"
     volumes:
-      - "../front/:/front"
+      - "../${FRONT_NAME}/:/${FRONT_NAME}"
     ports:
-      - "1000:1000"
+      - ${FRONT_PORT}
 
   back:
-    container_name: back
+    container_name: ${BACK_NAME}
     build: 
       dockerfile: node.dockerfile
       context: .
     restart: unless-stopped
     ports:
-      - "2000:2000"
-    working_dir: "/back"
+      - ${BACK_PORT}
+    working_dir: "/${BACK_NAME}"
     volumes:
-      - ../back:/back
+      - ../${BACK_NAME}:/${BACK_NAME}
     # depends_on:
     #   - postgres
 
@@ -37,7 +37,8 @@ services:
     volumes: 
       - "../nginx/default.conf:/etc/nginx/conf.d/default.conf"
     ports:
-      - "8080:80"
+      - ${NGINX_OPEN_PORT}
+      - ${NGINX_SECURITY_PORT}
     logging:
       driver: none
 
