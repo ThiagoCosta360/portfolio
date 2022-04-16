@@ -14,9 +14,11 @@ down:
 	docker-compose -f ./@docker/docker-compose.yml -p portfolio down
 
 # Run docker-compose on PROD mode
-prod:
-	cd front; ng build --prod
+prod:	build-front
 	docker-compose -f ./@docker/docker-compose.yml -p portfolio --env-file ./@env/prod.env up nginx
+
+build-front:
+	cd front; ng build --prod
 
 # Build all docker files on docker-path
 docker-path = @docker
@@ -28,3 +30,8 @@ $(dockerfile-list):
 #Build single docker file on docker-path
 %.dockerfile:
 	docker build -f $@ $(docker-path)
+
+heroku: build-front
+	docker build -t registry.heroku.com/portfolio-360/web -f ./@heroku/Dockerfile .
+	docker push registry.heroku.com/portfolio-360/web
+	heroku container:release web -a portfolio-360

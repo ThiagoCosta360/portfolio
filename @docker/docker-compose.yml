@@ -10,7 +10,6 @@ services:
     working_dir: "/${FRONT_NAME}"
     volumes:
       - "../${FRONT_NAME}/:/${FRONT_NAME}"
-      - ""
     ports:
       - "${FRONT_EXTERNAL_PORT}:${FRONT_INTERNAL_PORT}"
 
