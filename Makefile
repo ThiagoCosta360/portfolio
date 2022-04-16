@@ -15,7 +15,7 @@ down:
 
 # Run docker-compose on PROD mode
 prod:
-	# cd front; ng build --prod
+	cd front; ng build --prod
 	docker-compose -f ./@docker/docker-compose.yml -p portfolio --env-file ./@env/prod.env up nginx
 
 # Build all docker files on docker-path
