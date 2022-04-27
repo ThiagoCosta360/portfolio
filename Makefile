@@ -20,14 +20,14 @@ prod:	build-front
 build-front:
 	cd front; ng build --prod
 
-# Build all docker files on docker-path
+# Build all docker files on docker-path -> make up
 docker-path = @docker
 dockerfile-list = $(wildcard $(docker-path)/*.dockerfile)
 build: $(dockerfile-list)
 $(dockerfile-list):
 	docker build -f $@ .
 
-#Build single docker file on docker-path
+# Build single docker file on docker-path
 %.dockerfile:
 	docker build -f $@ $(docker-path)
 
