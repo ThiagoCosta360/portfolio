@@ -31,6 +31,7 @@ $(dockerfile-list):
 %.dockerfile:
 	docker build -f $@ $(docker-path)
 
+# Setup project on heroku
 heroku: build-front
 	docker build -t registry.heroku.com/portfolio-360/web -f ./@heroku/Dockerfile .
 	docker push registry.heroku.com/portfolio-360/web

@@ -41,22 +41,33 @@ services:
       - "${NGINX_EXTERNAL_SECURITY_PORT}:${NGINX_INTERNAL_SECURITY_PORT}"
 
   # postgres:
-  #   container_name: postgres
+  #   container_name: ${POSTGRES_NAME}
   #   image: postgres:alpine
   #   volumes:
   #     - postgres_data:/var/lib/postgresql/data/
   #   environment:
-  #     - "POSTGRES_USER=user"
-  #     - "POSTGRES_PASSWORD=pass"
-  #     - "POSTGRES_DB=db"
-  #     - "POSTGRES_HOST_AUTH_METHO=trust"
+  #     POSTGRES_USER: dev
+  #     POSTGRES_PASSWORD: dev
+  #     POSTGRES_DB: db
+  #     POSTGRES_HOST_AUTH_METHO: trust
   #   expose:
   #     - 5432
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U user -d db"]
-  #     interval: 1s
-  #     timeout: 1s
-  #     retries: 10
+  #   # healthcheck:
+  #   #   test: ["CMD-SHELL", "pg_isready -U dev -d db"]
+  #   #   interval: 1s
+  #   #   timeout: 1s
+  #   #   retries: 10
 
-# volumes:
-#   postgres_data:
+  # pgadmin:
+  #   image: dpage/pgadmin4:6.8
+  #   container_name: ${PGADMIN_NAME}
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "dev@dev.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "dev123"
+  #   ports:
+  #     - "${PGADMIN_INTERNAL_PORT}:${PGADMIN_EXTERNAL_PORT}"
+  #   depends_on:
+  #     - postgres
+
+volumes:
+  postgres_data:
