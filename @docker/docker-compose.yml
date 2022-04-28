@@ -24,8 +24,9 @@ services:
     working_dir: "/${BACK_NAME}"
     volumes:
       - ../${BACK_NAME}:/${BACK_NAME}
-    # depends_on:
-    #   - postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   nginx:
     container_name: ${NGINX_NAME}
@@ -39,37 +40,44 @@ services:
     ports:
       - "${NGINX_EXTERNAL_OPEN_PORT}:${NGINX_INTERNAL_OPEN_PORT}"
       - "${NGINX_EXTERNAL_SECURITY_PORT}:${NGINX_INTERNAL_SECURITY_PORT}"
+    logging:
+      driver: none
 
-  # postgres:
-  #   container_name: ${POSTGRES_NAME}
-  #   image: postgres:alpine
-  #   restart: ${RESTART_POLICY}
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data/
-  #   environment:
-  #     POSTGRES_USER: dev
-  #     POSTGRES_PASSWORD: dev
-  #     POSTGRES_DB: db
-  #     POSTGRES_HOST_AUTH_METHO: trust
-  #   expose:
-  #     - 5432
-  #   # healthcheck:
-  #   #   test: ["CMD-SHELL", "pg_isready -U dev -d db"]
-  #   #   interval: 1s
-  #   #   timeout: 1s
-  #   #   retries: 10
+  postgres:
+    container_name: ${POSTGRES_NAME}
+    image: postgres:alpine
+    restart: ${RESTART_POLICY}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev123
+      POSTGRES_DB: db
+      POSTGRES_HOST_AUTH_METHOD: trust
+    # ports:
+    #   - "5432:5432"
+    # expose:
+    #   - 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev -d db"]
+      interval: 1s
+      timeout: 1s
+      retries: 10
 
-  # pgadmin:
-  #   image: dpage/pgadmin4:6.8
-  #   restart: ${RESTART_POLICY}
-  #   container_name: ${PGADMIN_NAME}
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: "dev@dev.com"
-  #     PGADMIN_DEFAULT_PASSWORD: "dev123"
-  #   ports:
-  #     - "${PGADMIN_INTERNAL_PORT}:${PGADMIN_EXTERNAL_PORT}"
-  #   depends_on:
-  #     - postgres
+  pgadmin:
+    image: dpage/pgadmin4:6.8
+    restart: ${RESTART_POLICY}
+    container_name: ${PGADMIN_NAME}
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "dev@dev.com"
+      PGADMIN_DEFAULT_PASSWORD: "dev123"
+    ports:
+      - "${PGADMIN_EXTERNAL_PORT}:${PGADMIN_INTERNAL_PORT}"
+    depends_on:
+      - postgres
+    logging:
+      driver: none
+
 
 volumes:
   postgres_data:

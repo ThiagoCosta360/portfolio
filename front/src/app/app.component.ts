@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+	public count = 0;
+
 	constructor(
     private http: HttpClient,
 	) { }
@@ -15,6 +17,7 @@ export class AppComponent {
 		this.http.get('http://localhost:64/api/').subscribe(
 			(response: any) => {
 				console.info(response);
+				this.count++;
 			},
 			(err: any) => {
 				console.error(err);

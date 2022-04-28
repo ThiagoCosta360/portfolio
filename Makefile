@@ -36,3 +36,13 @@ heroku: build-front
 	docker build -t registry.heroku.com/portfolio-360/web -f ./@heroku/Dockerfile .
 	docker push registry.heroku.com/portfolio-360/web
 	heroku container:release web -a portfolio-360
+
+# rm all docker containers and volumes
+cleaning:
+	docker container stop $$(docker ps -a -q) || true
+	docker container rm $$(docker ps -a -q) || true
+	docker volume prune -f
+
+# restart the container c on dev mode
+restart:
+	docker-compose -f ./@docker/docker-compose.yml -p portfolio --env-file ./@env/dev.env restart $(c) 
