@@ -11,13 +11,26 @@ export class AppComponent {
 
 	constructor(
     private http: HttpClient,
-	) { }
+	) {
+		this.getCounter();
+	}
 
-	public update(): void {
-		this.http.get('http://localhost:64/api/').subscribe(
+	public updateCounter(): void {
+		this.http.patch('http://localhost:64/api/counter/1', { count: ++this.count }).subscribe(
+			(res) => {
+				console.info(res);
+			},
+			(err) => {
+				console.error(err);
+			},
+		);
+	}
+
+	public getCounter(): void {
+		this.http.get('http://localhost:64/api/counter/1').subscribe(
 			(response: any) => {
 				console.info(response);
-				this.count++;
+				this.count = response.data.count;
 			},
 			(err: any) => {
 				console.error(err);

@@ -30,13 +30,20 @@ export class CounterController {
     return { data: res };
   }
 
+  @Get(':id')
+  public async getById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ data: CounterModel }> {
+    const res = await this.model.findOne({ where: { id } });
+    return { data: res };
+  }
+
   @Patch(':id')
   public async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: CounterSchema,
   ): Promise<{ data: CounterModel }> {
-    const res = await this.model.update({ id }, body);
-    console.log(res);
+    await this.model.update({ id }, body);
     return { data: await this.model.findOne({ where: { id } }) };
   }
 }
