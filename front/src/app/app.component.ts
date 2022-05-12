@@ -16,7 +16,7 @@ export class AppComponent {
 	}
 
 	public updateCounter(): void {
-		this.http.patch('http://localhost:64/api/counter/1', { count: ++this.count }).subscribe(
+		this.http.patch('http://thiagocosta.me/api/counter/1', { count: ++this.count }).subscribe(
 			(res) => {
 				console.info(res);
 			},
@@ -27,7 +27,7 @@ export class AppComponent {
 	}
 
 	public getCounter(): void {
-		this.http.get('http://localhost:64/api/counter/1').subscribe(
+		this.http.get('http://thiagocosta.me/api/counter/1').subscribe(
 			(response: any) => {
 				console.info(response);
 				this.count = response.data.count;

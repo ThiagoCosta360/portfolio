@@ -4,8 +4,8 @@ import { typeOrmConfig } from './configs/typeorm.config';
 import { CounterModule } from './modules/counter.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), CounterModule],
-  controllers: [],
-  providers: [],
+	imports: [TypeOrmModule.forRoot(typeOrmConfig), CounterModule],
+	controllers: [],
+	providers: [],
 })
-export class AppModule {}
+export class AppModule { }
